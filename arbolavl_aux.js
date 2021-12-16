@@ -14,7 +14,6 @@ class avl{
 
     insertar(valor){
         let nuevo = new nodo(valor);
-
         if(this.raiz == null){
             this.raiz= nuevo;
         }else{
@@ -24,40 +23,28 @@ class avl{
 
     insertar_nodo(raiz_actual,nuevo){
         if(raiz_actual != null){
-            //recorrer hijos
             if(raiz_actual.dato > nuevo.dato){
                 raiz_actual.izq = this.insertar_nodo(raiz_actual.izq,nuevo);
-                //validaciones
-                
                 if(this.altura(raiz_actual.der)-this.altura(raiz_actual.izq)==-2){
-                    console.log("entra a rotacion IZQUIERDA");
-                    //if(this.altura(raiz_actual.izq.der)-this.altura(raiz_actual.izq.izq))
-                    if(nuevo.dato < raiz_actual.izq.dato){ //-1 ROTACION IZQUIERDA
-                        console.log("entra a rotacion IZQUIERDA IZQUIERDA");
+                    if(nuevo.dato < raiz_actual.izq.dato){
                         raiz_actual = this.r_izquierda(raiz_actual);
                     }else{ //1 ROTACION IZQ-DERECHA
-                        console.log("entra a rotacion IZQUIERDA DERECHA");
                         raiz_actual = this.r_izq_der(raiz_actual);
                     }
                 }
             }else if(raiz_actual.dato < nuevo.dato){
                 raiz_actual.der = this.insertar_nodo(raiz_actual.der,nuevo);
-                //validaciones
                 if(this.altura(raiz_actual.der)-this.altura(raiz_actual.izq)==2){
-                    console.log("entra a rotacion DERECHA");
                     if(nuevo.dato > raiz_actual.der.dato){ // 1 ROTACION DERECHA
-                        console.log("entra a rotacion DERECHA DERECHA");
                         raiz_actual=this.r_derecha(raiz_actual);
                     }else{//-1 ROTACION DERECHA IZQUIERDA
-                        console.log("entra a rotacion DERECHA IZQUIERDA");
                         raiz_actual = this.r_der_izq(raiz_actual);
                     }
                 }
 
             }else{
-                console.log("NO SE PUEDE INSERTAR EL DATO PORQUE YA EXISTE");
+                console.log("Dato repetido");
             }
-
             raiz_actual.altura = this.altura_maxima(this.altura(raiz_actual.der),this.altura(raiz_actual.izq))+1;
             return raiz_actual;
         }else{
@@ -75,15 +62,14 @@ class avl{
     }
 
     altura_maxima(h1,h2){
-        if(h2>=h1){ //************************ MAYOR O IGUAL */
+        if(h2>=h1){ 
             return h2;
         }else{
             return h1;
         }
 
     }
-    //ROTACIONES
-    //simple izquerda
+    //Rotacion simple izquierda
     r_izquierda(nodo){
         let aux = nodo.izq;
         nodo.izq= aux.der;
@@ -93,7 +79,7 @@ class avl{
         return aux;
     }
     
-    //simple derecha
+    //Rotacion simple derecha
     r_derecha(nodo){
         let aux = nodo.der;
         nodo.der= aux.izq;
@@ -103,14 +89,14 @@ class avl{
         return aux;
     }
 
-    //rotacion izq-der
+    //Rotacion izq-der
     r_izq_der(nodo){
         nodo.izq = this.r_derecha(nodo.izq);
         let aux = this.r_izquierda(nodo);
         return aux;
     }
 
-    //rotacion der-izq
+    //Rotacion der-izq
     r_der_izq(nodo){
         nodo.der = this.r_izquierda(nodo.der);
         let aux = this.r_derecha(nodo);
@@ -179,7 +165,7 @@ class avl{
         return cadena;
     }*/
 }
-
+/*
 arbol = new avl();
 
 arbol.insertar(30);
@@ -193,4 +179,4 @@ arbol.insertar(100);
 
 
 arbol.inOrden(arbol.raiz);
-
+*/

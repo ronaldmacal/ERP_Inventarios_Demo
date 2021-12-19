@@ -2,12 +2,9 @@ body {
     font-family: "Lato", sans-serif;
 }
 
-
-
 .main-head{
     height: 150px;
     background: #FFF;
-   
 }
 
 .sidenav {
@@ -16,7 +13,6 @@ body {
     overflow-x: hidden;
     padding-top: 20px;
 }
-
 
 .main {
     padding: 0px 10px;
@@ -30,7 +26,6 @@ body {
     .login-form{
         margin-top: 10%;
     }
-
     .register-form{
         margin-top: 10%;
     }
@@ -40,7 +35,6 @@ body {
     .main{
         margin-left: 40%; 
     }
-
     .sidenav{
         width: 40%;
         position: fixed;
@@ -48,16 +42,13 @@ body {
         top: 0;
         left: 0;
     }
-
     .login-form{
         margin-top: 80%;
     }
-
     .register-form{
         margin-top: 20%;
     }
 }
-
 
 .login-main-text{
     margin-top: 20%;

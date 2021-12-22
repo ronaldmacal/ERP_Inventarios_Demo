@@ -22,25 +22,42 @@
     <ul class="t-contents">  
         <li class="t-content"><p>
             <!--Contenido #1: Registrar-->
-            Nuevo cliente
+            <h3>Registrar cliente</h3>
+            <input type="text" class="form-control" placeholder="Identificador" id="idcliente"><br>
+            <input type="text" class="form-control" placeholder="Nombre" id="nombrecliente"><br>
+            <input type="text" class="form-control" placeholder="Correo" id="correocliente"><br>
+            <center><button type="submit" onclick="nuevocliente()" class="btn btn-primary">
+                Registrar Nuevo Cliente
+            </button></center><br>
             <!--END-->
         </p></li>
 
         <li class="t-content"><p>
             <!--Contenido #2: Eliminar-->
-            Eliminar cliente
+            <h3>Eliminar cliente</h3>
+            <input type="text" class="form-control" placeholder="Identificador" id="idclienteeliminar"><br>
+            <center><button type="submit" onclick="eliminarcliente()" class="btn btn-primary">
+                Eliminar Cliente
+            </button></center><br>
             <!--END-->
         </p></li>
 
         <li class="t-content"><p>
             <!--Contenido #3: Carga masiva-->
-            Agregar calendario
+            <h3>Agregar a calendario</h3>
+            <input type="text" class="form-control" placeholder="Mes" id="mesevento"><br>
+            <input type="text" class="form-control" placeholder="Dia" id="diaevento"><br>
+            <input type="text" class="form-control" placeholder="Hora" id="horaevento"><br>
+            <input type="text" class="form-control" placeholder="Detalles" id="descevento"><br>
+            <center><button type="submit" onclick="agregarCalentarioEmpleado()" class="btn btn-primary">
+                Agregar Evento
+            </button></center><br>
             <!--END-->
         </p></li>
 
         <li class="t-content"><p>
             <!--Contenido #4: Reportes-->
-            Ver calendario 
+            <h3>Ver calendario</h3>
             <!--END-->
         </p></li>
 

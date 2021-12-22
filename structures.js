@@ -660,7 +660,7 @@ class matriz{
 /* Termina la parte de la programacion de la matriz  */
 //-------------------------------------------------------------------------------------------------
 //insertar(id,nombre,edad,correo,contra){
-/*arbol = new avl();
+arbol = new avl();
 arbol.insertar(30,"Julio Ramos",42,"brak_gmail.com","cpesg");
 arbol.insertar(40,"Alberto del arco",23,"Eestup@gmail.com","d5fas6");
 arbol.insertar(20,"Alan De leon",41,"pie@hotmail.com","daeah");
@@ -675,4 +675,4 @@ arbol.insertarCliente(arbol.raiz,5,15,"Myaan","pasd@hotmail.com");
 arbol.insertarCalendario(arbol.raiz,70,2,22,16,"Prueba evento 1");
 arbol.insertarCalendario(arbol.raiz,100,7,22,16,"Prueba evento 2");
 arbol.insertarCalendario(arbol.raiz,20,10,22,16,"Prueba evento 3");
-arbol.inOrden(arbol.raiz);*/
+arbol.inOrden(arbol.raiz);

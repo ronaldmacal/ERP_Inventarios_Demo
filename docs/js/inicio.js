@@ -133,7 +133,17 @@ class avl{
             this.inOrden(raiz_actual.derecha);
         }
     }
-
+    graficarClientes(raiz_actual,idempleado){
+        if(raiz_actual!=null){
+            this.graficarClientes(raiz_actual.izquierda,idempleado);
+            //Parte de análisis
+            if(raiz_actual.id==idempleado){
+                raiz_actual.listaclientes.graphClientes();
+            }
+            //FIN 
+            this.graficarClientes(raiz_actual.izquierda,idempleado);
+        }
+    }
     postOrden(raiz_actual){
         if(raiz_actual != null){
             this.postOrden(raiz_actual.izquierda);
@@ -240,6 +250,24 @@ class listaClientes{
             nuevo.siguiente=null;
             nuevo.anterior=this.ultimo;
             this.ultimo=nuevo;
+        }
+    }
+
+    graphClientes(){
+        let cadena="digraph G{";
+        let actual = this.primero;
+        if (this.primero!=null){
+            while (actual != null){
+                cadena+=actual.id+";\n";
+                actual=actual.siguiente;
+            }
+            actual= this.primero;
+            while (actual != null){
+                cadena+=actual.id+"->"+actual.siguiente.id+";\n";
+                cadena+=actual.siguiente.id+"->"+actual.id+";\n";
+            }
+            cadena+="}";
+            document.body.innerHTML+=Viz(cadena,"svg");
         }
     }
 
@@ -581,87 +609,6 @@ class matriz{
             aux = aux.sig;
         }
     }
-    /*
-    graficar_matriz(){
-        let cadena="";
-        cadena+= "digraph Matriz{ \n";
-        cadena+= "node[shape = box,width=0.7,height=0.7,fillcolor=\"azure2\" color=\"white\" style=\"filled\"];\n";
-        cadena+= "edge[style = \"bold\"]; \n"
-        //graficar el nodo matriz
-        cadena+="node[label = Matriz fillcolor=\" darkolivegreen1\" pos = \"-1,1!\"]principal;"
-        //graficar cabeceras X
-        let aux_x = this.cabecetas_x.primero;
-        while(aux_x!=null){
-            cadena+="node[label = "+aux_x.dato+" fillcolor=\" azure1\" pos = \""+aux_x.dato+",1!\"]x"+aux_x.dato+";\n"
-            aux_x = aux_x.sig;
-        }
-        aux_x = this.cabecetas_x.primero;
-        while(aux_x.sig != null){
-            cadena+="x"+aux_x.dato+"->"+"x"+aux_x.sig.dato+";\n"
-            cadena+="x"+aux_x.sig.dato+"->"+"x"+aux_x.dato+";\n"
-            aux_x = aux_x.sig;
-        }
-
-        if(this.cabecetas_x.primero!= null){
-            cadena+="principal->x"+this.cabecetas_x.primero.dato+";\n";
-        }
-        //graficar cabeceras Y
-        let aux_y = this.cabecetas_y.primero;
-        while(aux_y!=null){
-            cadena+="node[label = "+aux_y.dato+" fillcolor=\" azure1\" pos = \"-1,-"+aux_y.dato+"!\"]y"+aux_y.dato+";\n"
-            aux_y = aux_y.sig;
-        }
-        aux_y = this.cabecetas_y.primero;
-        while(aux_y.sig != null){
-            cadena+="y"+aux_y.dato+"->"+"y"+aux_y.sig.dato+";\n"
-            cadena+="y"+aux_y.sig.dato+"->"+"y"+aux_y.dato+";\n"
-            aux_y = aux_y.sig;
-        }
-
-        if(this.cabecetas_x.primero!= null){
-            cadena+="principal->y"+this.cabecetas_y.primero.dato+";\n";
-        }
-        //graficar nodos internos
-        aux_x = this.cabecetas_x.primero;
-        while(aux_x!=null){ //recorrer listas de x para graficar los nodos de sus lista interna
-            let aux = aux_x.lista_interna.primero;
-            while(aux!=null){
-                cadena+="   node[label = "+aux.valor+" fillcolor=\" gold2\" pos = \""+aux.x+",-"+aux.y+"!\"]x"+aux.x+"y"+aux.y+";\n"
-                aux = aux.sig;
-            }
-
-            //graficar flechitas
-            aux = aux_x.lista_interna.primero;
-            while(aux.sig!= null){
-                cadena+="   x"+aux.x+"y"+aux.y+"->x"+aux.sig.x+"y"+aux.sig.y+";\n";
-                cadena+="   x"+aux.sig.x+"y"+aux.sig.y+"->x"+aux.x+"y"+aux.y+";\n";
-                aux= aux.sig;
-            }
-            if(aux_x.lista_interna.primero!= null){
-                cadena+="x"+aux_x.dato+"->"+"x"+aux_x.lista_interna.primero.x+"y"+aux_x.lista_interna.primero.y+";\n";
-            }
-
-            aux_x = aux_x.sig;
-        }
-
-        aux_y = this.cabecetas_y.primero;
-        while(aux_y!=null){ //recorrer la lista de y para graficar cada lista
-            //graficar flechitas Y
-            let aux = aux_y.lista_interna.primero;
-            while(aux.abajo!= null){
-                cadena+="   x"+aux.x+"y"+aux.y+"->x"+aux.abajo.x+"y"+aux.abajo.y+";\n";
-                cadena+="   x"+aux.abajo.x+"y"+aux.abajo.y+"->x"+aux.x+"y"+aux.y+";\n";
-                aux= aux.abajo;
-            }
-            if(aux_y.lista_interna.primero!= null){
-                cadena+="y"+aux_y.dato+"->"+"x"+aux_y.lista_interna.primero.x+"y"+aux_y.lista_interna.primero.y+";\n";
-            }
-            aux_y = aux_y.sig;
-        }
-
-        cadena+= "\n}"
-        console.log(cadena);
-    }*/
 }
 /* Termina la parte de la programacion de la matriz  */
 //-------------------------------------------------------------------------------------------------
@@ -829,19 +776,29 @@ arbolb.mostrar();
 //Estructuras clave del proyecto
 let avl_empleados = new avl();
 let binario_proveedores=new arbolbinario();
-function ingresarapp(){
-    let user=document.getElementById('usuario').value;
-    let contra=document.getElementById('contrasena').value;
+
+function cargarSession(){
     var temp = CircularJSON.stringfy(avl_empleados);
     var temp2 = JSON.stringify(temp);
     sessionStorage.setItem("avl",temp2);
     var temp = CircularJSON.stringfy(binario_proveedores);
     var temp2 = JSON.stringfy(temp);
     sessionStorage.setItem("binario",temp2);
+}
+
+function ingresarapp(){
+    let user=document.getElementById('usuario').value;
+    let contra=document.getElementById('contrasena').value;
     if(user=="Admin" && contra=="1234"){
+        /*var temp = CircularJSON.stringfy(avl_empleados);
+        var temp2 = JSON.stringify(temp);
+        sessionStorage.setItem("avl",temp2);
+        var temp = CircularJSON.stringfy(binario_proveedores);
+        var temp2 = JSON.stringfy(temp);
+        sessionStorage.setItem("binario",temp2);*/
         location.href="../docs/administrador.html";
     }else{
-        irAEmpledo();
+        sessionStorage.setItem("usuario",44);
         console.log("Empleado intentando ingresar");
     }
 }
@@ -857,12 +814,7 @@ function recuperar_estructuras(){
 }
 
 function cierraAdmin() {
-    var temp = CircularJSON.stringfy(avl_empleados);
-    var temp2 = JSON.stringify(temp);
-    sessionStorage.setItem("avl",temp2);
-    var temp = CircularJSON.stringfy(binario_proveedores);
-    var temp2 = JSON.stringfy(temp);
-    sessionStorage.setItem("binario",temp2);
+    cargarSession();
     location.href="../docs/index.html";
 }
 /*--------------------------------------------------------------------------------
@@ -968,10 +920,54 @@ function cargaeventos(){
     var reader = new FileReader();
     reader.addEventListener('load',function(){
         var result = JSON.parse(reader.result);
-        console.log(result);
-        //for (let i in result.vendedores){   
-        //}
+        //arbol.insertarCalendario(arbol.raiz,20,10,22,16,"Prueba evento 3");
+        for (let i in result.vendedores){   
+            var idempleado=result.vendedores[i].id;
+            for (let x in result.vendedores[i].eventos){
+                avl_empleados.insertarCalendario(avl_empleados.raiz,idempleado,result.vendedores[i].eventos[x].mes,result.vendedores[i].eventos[x].dia,result.vendedores[i].eventos[x].hora,result.vendedores[i].eventos[x].desc);
+            }
+        }
     });
     reader.readAsText(upload.files[0]);
     alert("Carga masiva de eventos para empleados hecha con éxito.");
+}
+/*--------------------------------------------------------------------------------
+**********************************************************************************
+                                  Reportes
+**********************************************************************************
+----------------------------------------------------------------------------------
+*/
+function repoavl(){
+//3
+}
+function repolistadoble(){
+    let idempleado=document.getElementById('repoidempleadolista').value;
+    avl_empleados.graficarClientes(avl_empleados.raiz,idempleado);
+}
+function repocalendario(){
+//4
+}
+function repoproveedores(){
+//2
+}
+/*--------------------------------------------------------------------------------
+**********************************************************************************
+                                  Empleado
+**********************************************************************************
+----------------------------------------------------------------------------------
+*/
+function nuevocliente(){
+    //arbol.insertarCliente(arbol.raiz,40,23,"Luiz Miguel","luismi@yahoo.com");
+    let idempleado = sessionStorage.getItem('usuario');
+    avl_empleados.insertarCliente(avl_empleados.raiz,idempleado,document.getElementById('idcliente').value,document.getElementById('nombrecliente').value,document.getElementById('correocliente').value);
+    alert("Nuevo cliente registrado");
+}
+function eliminarcliente(){
+    let idempleado = sessionStorage.getItem('usuario');
+    //Pendiente
+}
+function agregarCalentarioEmpleado(){
+    let idempleado = sessionStorage.getItem('usuario');
+    avl_empleados.insertarCalendario(avl_empleados.raiz,idempleado,document.getElementById('mesevento').value,document.getElementById('diaevento').value,document.getElementById('horaevento').value,document.getElementById('descevento').value);
+    alert("Evento agregado a su calendario");
 }

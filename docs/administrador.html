@@ -22,13 +22,46 @@
     <ul class="t-contents">  
         <li class="t-content"><p>
             <!--Contenido #1: Registrar-->
-            Nuevo empleado
+            <h3>Registrar empleado</h3>
+            <input type="text" class="form-control" placeholder="Identificador" id="idempleado"><br>
+            <input type="text" class="form-control" placeholder="Nombre" id="nombreempleado"><br>
+            <input type="text" class="form-control" placeholder="Edad" id="edadempleado"><br>
+            <input type="text" class="form-control" placeholder="Correo" id="correoempleado"><br>
+            <input type="text" class="form-control" placeholder="Contraseña" id="contraempleado"><br>
+            <center><button type="submit" onclick="nuevoempleado()" class="btn btn-primary">
+                Registrar Nuevo Empleado
+            </button></center><br>
+            <center><button type="submit" onclick="limpiarregempelado()" class="btn btn-primary">
+                Limpiar Formulario
+            </button></center><br>
+
+            <h3>Registrar proveedor</h3>
+            <input type="text" class="form-control" placeholder="Identificador" id="idproveedor"><br>
+            <input type="text" class="form-control" placeholder="Nombre" id="nombreproveedor"><br>
+            <input type="text" class="form-control" placeholder="Direccion" id="direccionproveedor"><br>
+            <input type="text" class="form-control" placeholder="Telefono" id="telefonoproveedor"><br>
+            <input type="text" class="form-control" placeholder="Correo" id="correoproveedor"><br>
+            <center><button type="submit" onclick="nuevoproveedor()" class="btn btn-primary">
+                Registrar Nuevo Proveedor
+            </button></center><br>
+            <center><button type="submit" onclick="limpiarregproveedor()" class="btn btn-primary">
+                Limpiar Formulario
+            </button></center><br>
             <!--END-->
         </p></li>
 
         <li class="t-content"><p>
             <!--Contenido #2: Eliminar-->
-            Contenido para pestaña Verde.
+            <h3>Eliminar empleado</h3>
+            <input type="text" class="form-control" placeholder="Identificador" id="idempleadodelete"><br>
+            <center><button type="submit" onclick="eliminarempleado()" class="btn btn-primary">
+                Eliminar
+            </button></center><br>
+            <h3>Eliminar proveedor</h3>
+            <input type="text" class="form-control" placeholder="Identificador" id="idproveedordelete"><br>
+            <center><button type="submit" onclick="eliminarproveedor()" class="btn btn-primary">
+                Eliminar
+            </button></center><br>
             <!--END-->
         </p></li>
 
@@ -46,10 +79,11 @@
 
         <li class="t-content"><p>
             <!--Contenido #5: Cierre-->
-            ¿Seguro de cerrar sesión?
+            <center>
+            ¿Seguro de cerrar sesión?<br>
             <button type="submit" onclick="cierraAdmin()" class="btn btn-secondary">
                 Cerrar
-            </button>
+            </button></center>
             <!--insertar boton-->
             <!--END-->
         </p></li>

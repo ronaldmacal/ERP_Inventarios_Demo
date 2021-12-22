@@ -54,7 +54,6 @@ class avl{
                         raiz_actual = this.r_der_izq(raiz_actual);
                     }
                 }
-
             }else{
                 console.log("Dato repetido");
             }
@@ -859,8 +858,61 @@ function recuperar_estructuras(){
 }
 
 function cierraAdmin() {
+    var temp = CircularJSON.stringfy(avl_empleados);
+    var temp2 = JSON.stringify(temp);
+    sessionStorage.setItem("avl",temp2);
+    var temp = CircularJSON.stringfy(binario_proveedores);
+    var temp2 = JSON.stringfy(temp);
+    sessionStorage.setItem("binario",temp2);
     location.href="../docs/index.html";
 }
-function cierraEmpleado(){
-    location.href="../docs/index.html";
+/*--------------------------------------------------------------------------------
+**********************************************************************************
+                            Area de Administrador
+**********************************************************************************
+----------------------------------------------------------------------------------
+*/
+function nuevoempleado(){
+    let idem= document.getElementById('idempleado').value;
+    let nomem= document.getElementById('nombreempleado').value;
+    let edadem= document.getElementById('edadempleado').value;
+    let correoem= document.getElementById('correoempleado').value;
+    let contraem= document.getElementById('contraempleado').value;
+    //arbol.insertar(30,"Julio Ramos",42,"brak_gmail.com","cpesg");
+    avl_empleados.insertar(idem,nomem,edadem,correoem,contraem);
+    alert("Nuevo empleado registrado");
+    avl_empleados.inOrden(avl_empleados.raiz);
+}
+function nuevoproveedor(){
+    let idprov = document.getElementById('idproveedor').value;
+    let nombreprov = document.getElementById('nombreproveedor').value;
+    let dirprov = document.getElementById('direccionproveedor').value;
+    let telefonoprov = document.getElementById('telefonoproveedor').value;
+    let correoprov = document.getElementById('correoproveedor').value;
+    binario_proveedores.insertar(idprov,nombreprov,dirprov,telefonoprov,correoprov);
+    alert("Nuevo proveedor registrado.");
+    binario_proveedores.mostrar();
+}
+function limpiarregempelado(){
+    document.getElementById('idempleado').value="";
+    document.getElementById('nombreempleado').value="";
+    document.getElementById('edadempleado').value="";
+    document.getElementById('correoempleado').value="";
+    document.getElementById('contraempleado').value="";
+}
+function limpiarregproveedor(){
+    document.getElementById('idproveedor').value="";
+    document.getElementById('nombreproveedor').value="";
+    document.getElementById('direccionproveedor').value="";
+    document.getElementById('telefonoproveedor').value="";
+    document.getElementById('correoproveedor').value="";
+}
+function eliminarempleado(){
+    let idempleado= document.getElementById('idempleadodelete').value;
+}
+function eliminarproveedor(){
+    let idproveedor = document.getElementById('idproveedordelete').value;
+    binario_proveedores.eliminar(idproveedor);
+    alert("Provedor: "+idproveedor+" eliminado");
+    binario_proveedores.mostrar();
 }

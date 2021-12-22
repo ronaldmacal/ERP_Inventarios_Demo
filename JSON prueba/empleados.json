@@ -1,0 +1,26 @@
+{
+	"vendedores":
+	[
+		{
+			"id":45,
+			"nombre":"juan",
+			"edad": 25,
+			"correo": "juan@gmail.com",
+			"password": "juanito1234"
+		},
+		{
+			"id":2,
+			"nombre":"Luis",
+			"edad": 30,
+			"correo": "luis@gmail.com",
+			"password": "luis555"
+		},
+		{
+			"id":88,
+			"nombre":"Kevin",
+			"edad": 30,
+			"correo": "kvin@gmail.com",
+			"password": "kev912"
+		}
+	]	
+} 

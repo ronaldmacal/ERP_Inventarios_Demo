@@ -710,7 +710,6 @@ class arbolbinario{
 
     mostrar(){
         let actual=this.raiz;
-        console.log("raiz: "+this.raiz.id);
         this.inOrden(actual)
     }
 
@@ -868,7 +867,7 @@ function cierraAdmin() {
 }
 /*--------------------------------------------------------------------------------
 **********************************************************************************
-                            Area de Administrador
+                     Reg/Eliminar Empelado y Proveedor
 **********************************************************************************
 ----------------------------------------------------------------------------------
 */
@@ -908,11 +907,71 @@ function limpiarregproveedor(){
     document.getElementById('correoproveedor').value="";
 }
 function eliminarempleado(){
-    let idempleado= document.getElementById('idempleadodelete').value;
+    avl_empleados.inOrden(avl_empleados.raiz);
 }
 function eliminarproveedor(){
     let idproveedor = document.getElementById('idproveedordelete').value;
     binario_proveedores.eliminar(idproveedor);
     alert("Provedor: "+idproveedor+" eliminado");
     binario_proveedores.mostrar();
+}
+/*--------------------------------------------------------------------------------
+**********************************************************************************
+                                Carga masiva
+**********************************************************************************
+----------------------------------------------------------------------------------
+*/
+function cargaproveedores(){
+    var upload = document.getElementById('archivo');
+    var reader = new FileReader();
+    reader.addEventListener('load',function(){
+        var result = JSON.parse(reader.result);
+        for (let i in result.proveedores){
+            binario_proveedores.insertar(result.proveedores[i].id,result.proveedores[i].nombre,result.proveedores[i].direccion,result.proveedores[i].telefono,result.proveedores[i].correo);
+            binario_proveedores.mostrar();
+        }
+    });
+    reader.readAsText(upload.files[0]);
+    alert("Carga masiva de proveedores hecha con éxito.");
+}
+function cargaempleados(){
+    var upload = document.getElementById('archivo');
+    var reader = new FileReader();
+    reader.addEventListener('load',function(){
+        var result = JSON.parse(reader.result);
+        for (let i in result.vendedores){
+            //arbol.insertar(30,"Julio Ramos",42,"brak_gmail.com","cpesg");
+            avl_empleados.insertar(result.vendedores[i].id,result.vendedores[i].nombre,result.vendedores[i].edad,result.vendedores[i].correo,result.vendedores[i].password);
+        }
+    });
+    reader.readAsText(upload.files[0]);
+    alert("Carga masiva de empleados hecha con éxito.");
+}
+function cargaclientes(){
+    var upload = document.getElementById('archivo');
+    var reader = new FileReader();
+    reader.addEventListener('load',function(){
+        var result = JSON.parse(reader.result);
+        for (let i in result.vendedores){ 
+            var idempleado=result.vendedores[i].id;
+            for (let x in result.vendedores[i].clientes){
+                //arbol.insertarCliente(arbol.raiz,40,23,"Luiz Miguel","luismi@yahoo.com");
+                avl_empleados.insertarCliente(avl_empleados.raiz,idempleado,result.vendedores[i].clientes[x].id,result.vendedores[i].clientes[x].nombre,result.vendedores[i].clientes[x].correo);
+            }
+        }
+    });
+    reader.readAsText(upload.files[0]);
+    alert("Carga masiva de clientes para empleados hecha con éxito.");
+}
+function cargaeventos(){
+    var upload = document.getElementById('archivo');
+    var reader = new FileReader();
+    reader.addEventListener('load',function(){
+        var result = JSON.parse(reader.result);
+        console.log(result);
+        //for (let i in result.vendedores){   
+        //}
+    });
+    reader.readAsText(upload.files[0]);
+    alert("Carga masiva de eventos para empleados hecha con éxito.");
 }

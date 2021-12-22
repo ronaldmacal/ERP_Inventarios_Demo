@@ -1,6 +1,10 @@
-class nodo{
-    constructor(dato,padre){
-        this.dato=dato;
+class nodobinario{
+    constructor(id,padre,nombre,direccion,telefono,correo){
+        this.id=id;
+        this.nombre=nombre;
+        this.direccion=direccion;
+        this.telefono=telefono;
+        this.correo=correo;
         this.derecha=null;
         this.izquierda=null;
         this.padre=padre;
@@ -12,23 +16,23 @@ class arbolbinario{
         this.raiz=null;
     }
 
-    insertar(dato){
-        let nuevodato = new nodo(dato,null);
-        let actual= new nodo(dato,null) 
+    insertar(id,nombre,direccion,telefono,correo){
+        let nuevodato = new nodobinario(id,null,nombre,direccion,telefono,correo);
+        let actual= new nodobinario(id,null,nombre,direccion,telefono,correo) 
         actual=this.raiz;//curr_node
-        let nodo_padre=new nodo(dato,null);//parent_node
+        let nodo_padre=new nodobinario(id,null,nombre,direccion,telefono,correo);//parent_node
         if (this.raiz == null){
             this.raiz=nuevodato;
         }else{
             while (actual!=null){
                 nodo_padre=actual;
-                if (nuevodato.dato < actual.dato){
+                if (nuevodato.id < actual.id){
                     actual=actual.izquierda;
                 }else{
                     actual=actual.derecha;
                 }
             }
-            if (nuevodato.dato < nodo_padre.dato){
+            if (nuevodato.id < nodo_padre.id){
                 nodo_padre.izquierda=nuevodato;
             }else{
                 nodo_padre.derecha=nuevodato;
@@ -39,14 +43,14 @@ class arbolbinario{
 
     mostrar(){
         let actual=this.raiz;
-        console.log("raiz: "+this.raiz.dato);
+        console.log("raiz: "+this.raiz.id);
         this.inOrden(actual)
     }
 
     inOrden(actual){
         if (actual != null){
             this.inOrden(actual.izquierda);
-            console.log(actual.dato);
+            console.log(actual.id+" Nombre: "+actual.nombre);
             this.inOrden(actual.derecha);
         }
     }
@@ -68,12 +72,12 @@ class arbolbinario{
             }
         }
     }
-    eliminar(dato){
+    eliminar(id){
         let actual=null;
         if(this.raiz != null){
             actual=this.raiz;
-            while (actual != null && actual.dato!=dato){
-                if (dato < actual.dato){
+            while (actual != null && actual.id!=id){
+                if (id < actual.id){
                     actual=actual.izquierda;
                 }else{
                     actual=actual.derecha;
@@ -100,8 +104,8 @@ class arbolbinario{
                             acurr=acurr.derecha;
                         }
                     }
-                    this.eliminar(acurr.dato);
-                    actual.dato=acurr.dato;
+                    this.eliminar(acurr.id);
+                    actual.id=acurr.id;
                 }
             }
         }
@@ -109,20 +113,19 @@ class arbolbinario{
 }
 /*
 let arbol=new arbolbinario();
-arbol.insertar(45);
-arbol.insertar(23);
-arbol.insertar(65);
-arbol.insertar(2);
-arbol.insertar(38);
-arbol.insertar(7);
-arbol.insertar(52);
-arbol.insertar(96);
-arbol.insertar(48);
+arbol.insertar(45,"Ronald Macal","Villa Nueva","24421597","bark@hotmial.com");
+arbol.insertar(23,"Luis Perez","Villa Nueva","24421597","bark@hotmial.com");
+arbol.insertar(65,"Andre Gigant","Villa Nueva","24421597","bark@hotmial.com");
+arbol.insertar(2,"Pedro Alvarez","Villa Nueva","24421597","bark@hotmial.com");
+arbol.insertar(38,"Andres Cuttini","Villa Nueva","24421597","bark@hotmial.com");
+arbol.insertar(7,"Alan Alvarez","Villa Nueva","24421597","bark@hotmial.com");
+arbol.insertar(52,"Stefan GIlmore","Villa Nueva","24421597","bark@hotmial.com");
+arbol.insertar(96,"Tom Brady","Villa Nueva","24421597","bark@hotmial.com");
+arbol.insertar(48,"Xavi Hernandez","Villa Nueva","24421597","bark@hotmial.com");
 arbol.mostrar();
 console.log("Eliminar");
 arbol.eliminar(7);
 arbol.eliminar(48);
 arbol.eliminar(23);
 arbol.mostrar();
-
 */

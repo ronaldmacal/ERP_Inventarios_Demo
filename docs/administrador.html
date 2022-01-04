@@ -16,13 +16,18 @@
         <li class="t-tab">Registrar</li> 
         <li class="t-tab">Eliminar</li> 
         <li class="t-tab">Carga masiva</li> 
-        <li class="t-tab">Reportes</li> 
+        <li class="t-tab">Reportes</li>
         <li class="t-tab">Cerrar Sesión</li>
     </ul>
     <ul class="t-contents">  
         <li class="t-content"><p>
             <!--Contenido #1: Registrar-->
-            <h3>Registrar empleado</h3>
+            <!--**************************************************************************************-->
+            <center><h2>Fase 2</h2>
+            <h3>Registrar nuevo producto</h3>
+            <!--**************************************************************************************-->
+            <h2>Fase 1</h2>
+            <h3>Registrar empleado</h3></center>
             <input type="text" class="form-control" placeholder="Identificador" id="idempleado"><br>
             <input type="text" class="form-control" placeholder="Nombre" id="nombreempleado"><br>
             <input type="text" class="form-control" placeholder="Edad" id="edadempleado"><br>
@@ -34,8 +39,7 @@
             <center><button type="submit" onclick="limpiarregempelado()" class="btn btn-primary">
                 Limpiar Formulario
             </button></center><br>
-
-            <h3>Registrar proveedor</h3>
+            <center><h3>Registrar proveedor</h3></center>
             <input type="text" class="form-control" placeholder="Identificador" id="idproveedor"><br>
             <input type="text" class="form-control" placeholder="Nombre" id="nombreproveedor"><br>
             <input type="text" class="form-control" placeholder="Direccion" id="direccionproveedor"><br>
@@ -67,8 +71,21 @@
 
         <li class="t-content"><p>
             <!--Contenido #3: Carga masiva-->
+            <!--**************************************************************************************-->
             <center><h3>Carga masiva</h3><br>
             <input type="file" id="archivo"><br><br>
+            <h3>Fase 2</h3>
+            <button type="submit" onclick="" class="btn btn-primary">
+                Cargar Productos
+            </button><br><br>
+            <button type="submit" onclick="" class="btn btn-primary">
+                Cargar Facturas
+            </button><br><br>
+            <button type="submit" onclick="" class="btn btn-primary">
+                Cargar Rutas
+            </button><br><br>
+            <!--**************************************************************************************-->
+            <h3>Fase 1</h3>
             <button type="submit" onclick="cargaproveedores()" class="btn btn-primary">
                 Cargar Proveedores
             </button></center><br>
@@ -86,6 +103,31 @@
 
         <li class="t-content"><p>
             <!--Contenido #4: Reportes-->
+            <!--**************************************************************************************-->
+            <center><h3>Fase 2</h3></center>
+            <center><button type="submit" onclick="" class="btn btn-primary">
+                Reporte 1. Gráfico Árbol B
+            </button></center><br>
+            <center><button type="submit" onclick="" class="btn btn-primary">
+                Reporte 2. Gráfico Tabla Hash
+            </button></center><br>
+            <center><button type="submit" onclick="" class="btn btn-primary">
+                Reporte 3. Ventas por vendedor
+            </button></center><br>
+            <center><button type="submit" onclick="" class="btn btn-primary">
+                Reporte 4. Rutas
+            </button></center><br>
+            <center><button type="submit" onclick="" class="btn btn-primary">
+                Reporte 5. Ruta óptima
+            </button></center><br>
+            <center><button type="submit" onclick="" class="btn btn-primary">
+                Reporte 6. Encriptados AVL
+            </button></center><br>
+            <center><button type="submit" onclick="" class="btn btn-primary">
+                Reporte 7. BLockchain
+            </button></center><br>
+            <!--**************************************************************************************-->
+            <center><h3>Fase 1</h3></center>
             <center><button type="submit" onclick="repoavl()" class="btn btn-primary">
                 Reporte 1. Árbol AVL
             </button></center><br>
@@ -102,9 +144,8 @@
             </button></center><br>
             <!--END-->
         </p></li>
-
         <li class="t-content"><p>
-            <!--Contenido #5: Cierre-->
+            <!--Contenido #6: Cierre-->
             <center>
             ¿Seguro de cerrar sesión?<br>
             <button type="submit" onclick="cierraAdmin()" class="btn btn-secondary">
@@ -155,5 +196,6 @@
     </script>
     <script src="./js/circular-json.js"></script>
     <script src="./js/inicio.js"></script>
+    <script src="./js/fase2.js"></script>
 </body>
 </html>

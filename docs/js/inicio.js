@@ -1,3 +1,4 @@
+const CryptoJS = require('crypto-js');
 /*
 **********************************************************************************************
 **********************************************************************************************
@@ -594,6 +595,7 @@ class matriz{
                 console.log("       -"+aux2.valor);
                 aux2 = aux2.sig;
             }
+            
             aux = aux.sig;
         }
 
@@ -971,3 +973,15 @@ function agregarCalentarioEmpleado(){
     avl_empleados.insertarCalendario(avl_empleados.raiz,idempleado,document.getElementById('mesevento').value,document.getElementById('diaevento').value,document.getElementById('horaevento').value,document.getElementById('descevento').value);
     alert("Evento agregado a su calendario");
 }
+
+/**********************************************************************************************/
+/******************************************  Fase 2 *******************************************/
+/**********************************************************************************************/
+//Parte para encriptar los datos almacenados en el AVL.
+let message="Holla perra, no me puedes encriptar";
+console.log(message);
+var password="roml10fcb";
+var encrypted= CryptoJS.AES.encrypt(message,password);
+console.log("enc: "+encrypted);
+var decrypted= CryptoJS.AES.decrypt(encrypted,password).toString(CryptoJS.enc.Utf8);
+console.log("decry: "+decrypted);

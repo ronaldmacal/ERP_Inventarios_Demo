@@ -1,4 +1,3 @@
-const CryptoJS = require('crypto-js');
 /*
 **********************************************************************************************
 **********************************************************************************************
@@ -131,6 +130,9 @@ class avl{
             raiz_actual.listaclientes.mostrar();
             console.log("--/Lista meses y calendario");
             raiz_actual.listameses.mostrar();
+            console.log("Encriptación: ");
+            console.log("Correo: "+raiz_actual.correo);
+            console.log("Password: "+raiz_actual.password);
             this.inOrden(raiz_actual.derecha);
         }
     }
@@ -778,6 +780,7 @@ arbolb.mostrar();
 //Estructuras clave del proyecto
 let avl_empleados = new avl();
 let binario_proveedores=new arbolbinario();
+let passCrypto;
 
 function cargarSession(){
     var temp = CircularJSON.stringfy(avl_empleados);
@@ -832,7 +835,17 @@ function nuevoempleado(){
     let correoem= document.getElementById('correoempleado').value;
     let contraem= document.getElementById('contraempleado').value;
     //arbol.insertar(30,"Julio Ramos",42,"brak_gmail.com","cpesg");
-    avl_empleados.insertar(idem,nomem,edadem,correoem,contraem);
+    /*const myString = 'Hello';
+    console.log(myString);
+    const myBitArray = sjcl.hash.sha256.hash(myString)
+    const myHash = sjcl.codec.hex.fromBits(myBitArray)
+    console.log(myHash);*/
+    const correoEn = sjcl.hash.sha256.hash(correoem);
+    const contraEn = sjcl.hash.sha256.hash(contraem);
+    const hashCorreo = sjcl.codec.hex.fromBits(correoEn);
+    const hashContra = sjcl.codec.hex.fromBits(contraEn);
+    avl_empleados.insertar(idem,nomem,edadem,hashCorreo,hashContra);
+    console.log("*--> Pass: "+passCrypto);
     alert("Nuevo empleado registrado");
     avl_empleados.inOrden(avl_empleados.raiz);
 }
@@ -889,13 +902,18 @@ function cargaproveedores(){
     alert("Carga masiva de proveedores hecha con éxito.");
 }
 function cargaempleados(){
+    passCrypto= document.getElementById('contraencriptar');
     var upload = document.getElementById('archivo');
     var reader = new FileReader();
     reader.addEventListener('load',function(){
         var result = JSON.parse(reader.result);
         for (let i in result.vendedores){
             //arbol.insertar(30,"Julio Ramos",42,"brak_gmail.com","cpesg");
-            avl_empleados.insertar(result.vendedores[i].id,result.vendedores[i].nombre,result.vendedores[i].edad,result.vendedores[i].correo,result.vendedores[i].password);
+            const correoEn = sjcl.hash.sha256.hash(result.vendedores[i].correo);
+            const contraEn = sjcl.hash.sha256.hash(result.vendedores[i].password);
+            const hashCorreo = sjcl.codec.hex.fromBits(correoEn);
+            const hashContra = sjcl.codec.hex.fromBits(contraEn);
+            avl_empleados.insertar(result.vendedores[i].id,result.vendedores[i].nombre,result.vendedores[i].edad,hashCorreo,hashContra);
         }
     });
     reader.readAsText(upload.files[0]);
@@ -978,10 +996,6 @@ function agregarCalentarioEmpleado(){
 /******************************************  Fase 2 *******************************************/
 /**********************************************************************************************/
 //Parte para encriptar los datos almacenados en el AVL.
-let message="Holla perra, no me puedes encriptar";
-console.log(message);
-var password="roml10fcb";
-var encrypted= CryptoJS.AES.encrypt(message,password);
-console.log("enc: "+encrypted);
-var decrypted= CryptoJS.AES.decrypt(encrypted,password).toString(CryptoJS.enc.Utf8);
-console.log("decry: "+decrypted);
+function cryptoavl(){
+    avl_empleados.inOrden(avl_empleados.raiz);
+}

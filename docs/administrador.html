@@ -7,9 +7,10 @@
     <link rel="shortcut icon" href="img/icon.png">
     <link href="./css/admin.css" rel="stylesheet" type="text/css">   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script type="text/javascript" src="js/sjcl.js"></script>  
     <title>Administrador ERP</title>
 </head>
-<body onload="recuperar_estructuras()">
+<body onload="">
     <h1 class="titulo">MÓDULO ADMINISTRADOR ERP</h1>
     <div class="t-container">
     <ul class="t-tabs">  
@@ -25,6 +26,13 @@
             <!--**************************************************************************************-->
             <center><h2>Fase 2</h2>
             <h3>Registrar nuevo producto</h3>
+            <input type="text" class="form-control" placeholder="Identificador" id="idproducto"><br>
+            <input type="text" class="form-control" placeholder="Nombre" id="nombreproducto"><br>
+            <input type="text" class="form-control" placeholder="Precio" id="precioproducto"><br>
+            <input type="text" class="form-control" placeholder="Cantidad" id="cantidadproducto"><br>
+            <center><button type="submit" onclick="nuevoproducto()" class="btn btn-primary">
+                Registrar Nuevo Producto
+            </button></center><br>
             <!--**************************************************************************************-->
             <h2>Fase 1</h2>
             <h3>Registrar empleado</h3></center>
@@ -75,13 +83,13 @@
             <center><h3>Carga masiva</h3><br>
             <input type="file" id="archivo"><br><br>
             <h3>Fase 2</h3>
-            <button type="submit" onclick="" class="btn btn-primary">
+            <button type="submit" onclick="cargamasivaProductos()" class="btn btn-primary">
                 Cargar Productos
             </button><br><br>
-            <button type="submit" onclick="" class="btn btn-primary">
+            <button type="submit" onclick="cargamasivaVentas()" class="btn btn-primary">
                 Cargar Facturas
             </button><br><br>
-            <button type="submit" onclick="" class="btn btn-primary">
+            <button type="submit" onclick="cargamasivaRutas()" class="btn btn-primary">
                 Cargar Rutas
             </button><br><br>
             <!--**************************************************************************************-->
@@ -89,6 +97,7 @@
             <button type="submit" onclick="cargaproveedores()" class="btn btn-primary">
                 Cargar Proveedores
             </button></center><br>
+            <input type="text" class="form-control" placeholder="Contraseña encripta" id="contraencriptar"><br>
             <center><button type="submit" onclick="cargaempleados()" class="btn btn-primary">
                 Cargar Empleados
             </button></center><br>
@@ -105,22 +114,23 @@
             <!--Contenido #4: Reportes-->
             <!--**************************************************************************************-->
             <center><h3>Fase 2</h3></center>
-            <center><button type="submit" onclick="" class="btn btn-primary">
+            <center><button type="submit" onclick="graficararbolb()" class="btn btn-primary">
                 Reporte 1. Gráfico Árbol B
             </button></center><br>
-            <center><button type="submit" onclick="" class="btn btn-primary">
+            <center><button type="submit" onclick="graficarhash()" class="btn btn-primary">
                 Reporte 2. Gráfico Tabla Hash
             </button></center><br>
-            <center><button type="submit" onclick="" class="btn btn-primary">
+            <input type="text" class="form-control" placeholder="Id del vendedor" id="idvendedorgrafica"><br>
+            <center><button type="submit" onclick="graficarporvendedor()" class="btn btn-primary">
                 Reporte 3. Ventas por vendedor
             </button></center><br>
-            <center><button type="submit" onclick="" class="btn btn-primary">
+            <center><button type="submit" onclick="graficarRutas()" class="btn btn-primary">
                 Reporte 4. Rutas
             </button></center><br>
             <center><button type="submit" onclick="" class="btn btn-primary">
                 Reporte 5. Ruta óptima
             </button></center><br>
-            <center><button type="submit" onclick="" class="btn btn-primary">
+            <center><button type="submit" onclick="cryptoavl()" class="btn btn-primary">
                 Reporte 6. Encriptados AVL
             </button></center><br>
             <center><button type="submit" onclick="" class="btn btn-primary">

@@ -1,57 +1,94 @@
-const SHA256 = require('crypto-js/sha256');
+class bloque{
+    constructor(indice,data,previusHash){
+        this.indice = indice;
+        this.data = data;
+        this.fecha = Date.now();
+        this.previusHash = previusHash;
+        this.hash = this.crearHash();
+        this.nonce =0;
 
-class Block{
-    constructor(index,timestamp,data,nonce,previousHash=''){
-        this.index=index;
-        this.timestamp=timestamp;
-        this.data=data;
-        this.nonce=nonce;
-        this.previousHash=previousHash;
-        this.hash=this.calculateHash();
+        this.prueba_de_trabajo(3);
     }
 
-    calculateHash(){
-        return SHA256(this.index + this.timestamp + this.previousHash + this.data + this.nonce);
-    }
-}
-
-class BlockChain{
-    constructor(){
-        this.chain = [this.bloquedeInicio()];
+    crearHash(){
+      //usar libreria
+      return crypto.createHash('sha256').update(this.indice+this.data+this.fecha+this.previusHash+this.nonce).digest('hex');
     }
 
-    bloquedeInicio(){//DD-MM-YY::HH:MM::SS
-        return new Block(0,"01/01/2022::11:20:01","Inicio","0000","0");
-    }
-    
-    ultimoBlock(){
-        return this.chain[this.chain.length -1];
-    }
-
-    agregarBlock(newBlock){
-        newBlock.previousHash=this.ultimoBlock().hash;
-        newBlock.hash=newBlock.calculateHash();
-        this.chain.push(newBlock);
-    }
-
-    isChainValid(){
-        for (let i=1; i>this.chain.length;i++){
-            const actual=this.chain[i];
-            const previo=this.chain[i-1];
-            if (actual.hash !== actual.calculateHash()){
-                return false;
-            }
-
-            if(actual.previo !== previo.hash){
-                return false;
-            }
-        }
-        return true;
+    prueba_de_trabajo(dificultad){
+      while(this.hash.substring(0,dificultad) !== Array(dificultad+1).join("0")){
+        this.nonce++;
+        this.hash = this.crearHash();
+        //console.log("->nonce " +this.nonce);
+      }
+      //console.log(this.hash);
+      return this.hash;
     }
 }
 
-let bloquesDatos = new BlockChain();
-bloquesDatos.agregarBlock(new Block(1,"04/01/2022::12:27:30",{amount: 48},"0000",0));
-bloquesDatos.agregarBlock(new Block(2,"04/01/2022::12:29:40",{amount: 12},"0000",1));
-console.log(JSON.stringify(bloquesDatos, null, 4));
+class cadena{
+  constructor(){
+    this.indice=0;
+    this.cadena =[];
+    this.cadena.push(this.Bloque_genesis());
+  }
+
+  Bloque_genesis(){
+    let genesis = new bloque(this.indice,"bloque Genesis","");
+    this.indice++;
+    return genesis;
+  }
+
+  agregar(data){
+    let nuevo = new bloque(this.indice,data,this.cadena[this.indice-1].hash);
+    this.indice++;
+    this.cadena.push(nuevo);
+  }
+
+  recorrer(){
+    for(let item of this.cadena){
+      console.log(item);
+    }
+  }
+  
+}
+
+/*block = new bloque(0,"prueba",'00000000');
+block.prueba_de_trabajo(2);
+console.log(block);*/
+
+let blockChain = new cadena();
+
+let info=[]
+
+let nueva_venta = {
+  "id":3,
+  "vendedor":"vendedor3",
+  "cliente":"cliente1",
+  "productos":[
+    {
+    "id":1,
+    "cantidad":3
+    }
+  ]
+};
+info.push(nueva_venta)
+
+info.push({
+  "id":1,
+  "vendedor":"vendedor1",
+  "cliente":"cliente1",
+  "productos":[
+    {
+    "id":1,
+    "cantidad":3
+    }
+  ]
+}
+)
+//console.log(blockChain.cadena);
+blockChain.agregar(JSON.stringify(info));
+info =[];
+blockChain.agregar(JSON.stringify(info));
+blockChain.recorrer();
 

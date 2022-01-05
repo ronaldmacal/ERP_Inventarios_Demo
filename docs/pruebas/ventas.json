@@ -1,0 +1,36 @@
+{
+	"ventas":[
+		{
+			"vendedor":1,
+			"cliente":"cliente1",
+			"productos":[
+				{
+					"id":111,
+					"cantidad":3
+				},
+				{
+					"id":112,
+					"cantidad":1
+				}
+			]
+		},
+		{
+			"vendedor":2,
+			"cliente":"cliente2",
+			"productos":[
+				{
+					"id":112,
+					"cantidad":10
+				},
+				{
+					"id":114,
+					"cantidad":2
+				},
+				{
+					"id":113,
+					"cantidad":7
+				}
+			]
+		}
+	]
+}

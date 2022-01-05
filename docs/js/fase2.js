@@ -302,7 +302,39 @@ class Arbol_B{
             return cadena;
         }   
     }
+    buscarprecio(raiz_actual,idproducto){
+        if(raiz_actual.es_hoja(raiz_actual)){ 
+            let contador=0;
+            let aux = raiz_actual.claves.primero;
+            while(aux!=null){
+                contador++;
+                if(aux.id == idproducto){
+                    return aux.precio;
+                }
+                aux= aux.siguiente;
+            }
+        }else{
+            let contador=0;
+            let aux = raiz_actual.claves.primero;
+            while(aux!=null){
+                contador++;
+                if(aux.id == idproducto){
+                    return aux.precio;
+                }
+                aux= aux.siguiente;
+            }
 
+            //recorrer los hijos de cada clave
+            aux = raiz_actual.claves.primero;
+            while(aux != null){
+                if(aux.id == idproducto){
+                    return aux.precio;
+                }
+                aux = aux.siguiente;
+            }
+        }
+        return 0; 
+    }
     graficar_enlaces(raiz_actual){
         let cadena="";
         if(raiz_actual.es_hoja(raiz_actual)){
@@ -428,6 +460,44 @@ class hash{
             }
         }
     }
+    graficar(){
+        let cadena="digraph G{\n";
+        cadena+="nodesep=.05;\n";
+        cadena+="rankdir=LR;\n";
+        cadena+="node [shape=record,width=.1,height=.1];\n";
+        cadena+="node0 [label=\"";
+        //Capturar los valores del nodo de inicio
+        for(var i =0;i<this.size;i++){
+            if(this.claves[i]!=null){
+                if (i != this.size-1){
+                    cadena+="<"+this.claves[i].dato+"> "+this.claves[i].dato+" | ";
+                }else{
+                    cadena+="<"+this.claves[i].dato+"> "+this.claves[i].dato;
+                }
+            }else{
+                if (i != this.size-1){
+                    cadena+="<*> |";
+                }else{
+                    cadena+="<*>";
+                }
+            }
+        }
+        cadena+="\",height=2.5];\n";
+        cadena+="node [width = 1.5];\n";
+        var contadornodos=1;
+        var newvalor=0;
+        var recupera;
+        for(var i =0;i<this.size;i++){
+            if(this.claves[i]!=null){//(contadornodo,idventa)
+                const [ newvalor, recupera ] =  this.claves[i].listaproductos.graficar(contadornodos,this.claves[i].dato);
+                cadena+=recupera;
+                contadornodos=newvalor;
+            }
+        }
+        
+        cadena+="}";
+        return cadena;
+    }
 
     recorrer(){
         for(var i =0;i<this.size;i++){
@@ -437,6 +507,19 @@ class hash{
                 console.log("-----Termina la lista-----");
             }else{
                 console.log("--0> Hash vacio");
+            }
+        }
+    }
+
+    ventasporVendedor(idvendor){
+        console.log("Ventas de: "+idvendor);
+        for(var i =0;i<this.size;i++){
+            if(this.claves[i]!=null){
+                if(this.claves[i].idvendedor == idvendor){
+                    console.log(" Fac #: "+this.claves[i].dato);
+                    console.log(" Cliente: "+this.claves[i].idcliente);
+                    console.log("----");
+                }
             }
         }
     }
@@ -485,6 +568,35 @@ class listaVendido{
             this.ultimo=nuevo;
         }
     }
+    graficar(contadornodo,idventa){
+        let id="";
+        let cadena="";
+        let actual = new nodoVenta(id)
+        actual=this.primero;
+        var segcontador=contadornodo;
+        if (this.primero!=null){
+            while(actual!=null){
+                cadena+="node"+contadornodo+" [label = \""+actual.id+"\"];\n";
+                contadornodo++;
+                actual=actual.siguiente;
+            }
+        }
+        actual=this.primero;
+        var bool=true;
+        if (this.primero!=null){
+            while(actual!=null){
+                if(bool){
+                    cadena+="node0:"+idventa+" -> "+" node"+segcontador+";\n";
+                    bool=false;
+                }else{
+                    cadena+="node"+(segcontador-1)+" -> "+" node"+segcontador+";\n";
+                }
+                segcontador++;
+                actual=actual.siguiente;
+            }
+        }
+        return[contadornodo,cadena];
+    }
 
     mostrar(){
         let id="";
@@ -505,8 +617,9 @@ class listaVendido{
 /******************************************  Grafos *******************************************/
 /**********************************************************************************************/
 class nodo{
-    constructor(id){
+    constructor(id,nombre){
         this.id = id;
+        this.nombre=nombre;
         this.siguiente = null;
         this.anterior = null;
         this.ponderacion=0;
@@ -520,8 +633,8 @@ class lista_adyasentes{
         this.ultimo = null;
     }
 
-    insertar(id,p){
-        let nuevo = new nodo(id);
+    insertar(id,p,nombre){
+        let nuevo = new nodo(id,nombre);
         nuevo.ponderacion = p;
         if(this.primero == null){
             this.primero = nuevo;
@@ -546,8 +659,8 @@ class grafo{
         this.ultimo = null;
     }
 
-    insertar(id){
-        let nuevo = new nodo(id);
+    insertar(id,nombre){
+        let nuevo = new nodo(id,nombre);
 
         if(this.primero == null){
             this.primero = nuevo;
@@ -607,6 +720,7 @@ class grafo{
             cadena+="n"+aux.id+"[label= \""+aux.id+"\"];\n"
             aux = aux.siguiente;
         }
+        // graficar relaciones
         aux = this.primero;
         while(aux != null){
             let aux2 = aux.adyasentes.primero;
@@ -623,63 +737,176 @@ class grafo{
 /**********************************************************************************************/
 /****************************************  Blockchain *****************************************/
 /**********************************************************************************************/
-const SHA256 = require('crypto-js/sha256');
+class bloque{
+    constructor(indice,data,previusHash){
+        this.indice = indice;
+        this.data = data;
+        this.fecha = Date.now();
+        this.previusHash = previusHash;
+        this.hash = this.crearHash();
+        this.nonce =0;
 
-class Block{
-    constructor(index,timestamp,data,nonce,previousHash=''){
-        this.index=index;
-        this.timestamp=timestamp;
-        this.data=data;
-        this.nonce=nonce;
-        this.previousHash=previousHash;
-        this.hash=this.calculateHash();
+        this.prueba_de_trabajo(3);
     }
 
-    calculateHash(){
-        return SHA256(this.index + this.timestamp + this.previousHash + this.data + this.nonce);
-    }
-}
-
-class BlockChain{
-    constructor(){
-        this.chain = [this.bloquedeInicio()];
+    crearHash(){
+        //usar libreria
+        const string = sjcl.hash.sha256.hash(this.indice+this.data+this.fecha+this.previusHash+this.nonce);
+        const hash = sjcl.codec.hex.fromBits(string);
+        return hash;
     }
 
-    bloquedeInicio(){//DD-MM-YY::HH:MM::SS
-        return new Block(0,"01/01/2022::11:20:01","Inicio","0000","0");
-    }
-    
-    ultimoBlock(){
-        return this.chain[this.chain.length -1];
-    }
-
-    agregarBlock(newBlock){
-        newBlock.previousHash=this.ultimoBlock().hash;
-        newBlock.hash=newBlock.calculateHash();
-        this.chain.push(newBlock);
-    }
-
-    isChainValid(){
-        for (let i=1; i>this.chain.length;i++){
-            const actual=this.chain[i];
-            const previo=this.chain[i-1];
-            if (actual.hash !== actual.calculateHash()){
-                return false;
-            }
-
-            if(actual.previo !== previo.hash){
-                return false;
-            }
-        }
-        return true;
+    prueba_de_trabajo(dificultad){
+      while(this.hash.substring(0,dificultad) !== Array(dificultad+1).join("0")){
+        this.nonce++;
+        this.hash = this.crearHash();
+        //console.log("->nonce " +this.nonce);
+      }
+      //console.log(this.hash);
+      return this.hash;
     }
 }
 
+class cadena{
+  constructor(){
+    this.indice=0;
+    this.cadena =[];
+    this.cadena.push(this.Bloque_genesis());
+  }
 
+  Bloque_genesis(){
+    let genesis = new bloque(this.indice,"bloque Genesis","");
+    this.indice++;
+    return genesis;
+  }
+
+  agregar(data){
+    let nuevo = new bloque(this.indice,data,this.cadena[this.indice-1].hash);
+    this.indice++;
+    this.cadena.push(nuevo);
+  }
+
+  recorrer(){
+    for(let item of this.cadena){
+      console.log(item);
+    }
+  }
+  
+}
 /**********************************************************************************************/
 /************************************  Programación Fase 2 ************************************/
 /**********************************************************************************************/
 let ventasHash = new hash();
 let arbolProductos = new Arbol_B();
 let grafoRutas = new grafo();
-let bloqueChain = new BlockChain();
+let noventa=0;
+
+function cargamasivaProductos(){
+    var upload = document.getElementById('archivo');
+    var reader = new FileReader();
+    reader.addEventListener('load',function(){
+        var result = JSON.parse(reader.result);
+        for (let i in result.productos){//dato,nombre,precio,cantidad
+            arbolProductos.insertar_nodo(result.productos[i].id,result.productos[i].nombre,result.productos[i].precio,result.productos[i].cantidad);
+        }
+    });
+    reader.readAsText(upload.files[0]);
+    alert("Carga masiva de productos hecha con éxito.");
+}
+
+function nuevoproducto(){
+    let id = document.getElementById('idproducto').value;
+    let nombre = document.getElementById('nombreproducto').value;
+    let precio = document.getElementById('precioproducto').value;
+    let cantidad = document.getElementById('cantidadproducto').value;
+    arbolProductos.insertar_nodo(id,nombre,precio,cantidad);
+    alert("Producto guardado con éxitos.");
+}
+
+function graficararbolb(){
+    console.log(arbolProductos.graficar());
+    //Pendiente generar el DOT
+}
+
+function cargamasivaVentas(){ 
+    var upload = document.getElementById('archivo');
+    var reader = new FileReader();
+    reader.addEventListener('load',function(){
+        var result = JSON.parse(reader.result);
+        for (let i in result.ventas){//dato,nombre,precio,cantidad
+            //dato,idvendedor,idcliente,total
+            //tabla.insertar(new nodohash(10,111,"Cliente1",40));
+            var total=0;
+            var nvendedor = result.ventas[i].vendedor;
+            var ncliente = result.ventas[i].cliente;
+            //Capturar los totales:
+            for (let x in result.ventas[i].productos){
+                total=total+(arbolProductos.buscarprecio(arbolProductos.raiz,result.ventas[i].productos[x].id)*result.ventas[i].productos[x].cantidad);
+            }
+            ventasHash.insertar(new nodohash(noventa,nvendedor,ncliente,total));
+            //Ingresar los valores 
+            for (let x in result.ventas[i].productos){
+                ventasHash.insertar_producto(noventa,result.ventas[i].productos[x].id,result.ventas[i].productos[x].cantidad);
+            }
+            noventa++;
+        }
+    });
+    reader.readAsText(upload.files[0]);
+    alert("Carga masiva de ventas hecha con éxito.");
+}
+
+function graficarhash(){
+    console.log("---------------------Prueba*--------------------------");
+    ventasHash.recorrer();
+    console.log("-----------------------FIN----------------------------");
+    console.log(ventasHash.graficar());
+    //Falta graficar
+}
+
+function cargamasivaRutas(){
+    var bodegas = [];
+    var upload = document.getElementById('archivo');
+    var reader = new FileReader();
+    reader.addEventListener('load',function(){
+        var result = JSON.parse(reader.result);
+        for (let i in result.rutas){
+            var bool=false;
+            for (let k in bodegas){
+                if(bodegas[k] == result.rutas[i].id){
+                    bool = true;
+                }
+            }
+            if(!bool){
+                bodegas.push(result.rutas[i].id);
+                grafoRutas.insertar(result.rutas[i].id,result.rutas[i].nombre);
+            }
+            //Revisar
+            for (let x in result.rutas[i].adyacentes){
+                bool=false;
+                for (let k in bodegas){
+                    if(bodegas[k] == result.rutas[i].adyacentes[x].id){
+                        bool = true;
+                    }
+                }
+                if(!bool){
+                    bodegas.push(result.rutas[i].adyacentes[x].id);
+                    grafoRutas.insertar(result.rutas[i].adyacentes[x].id,result.rutas[i].adyacentes[x].nombre);
+                }
+                grafoRutas.agregar_adyacente(result.rutas[i].id,result.rutas[i].adyacentes[x].id,result.rutas[i].adyacentes[x].distancia);
+            }
+            
+        }
+    });
+    reader.readAsText(upload.files[0]);
+    alert("Carga masiva de rutas hecha con éxito.");
+}
+
+function graficarRutas(){
+    grafoRutas.graficar();
+}
+
+function graficarporvendedor(){
+    let id= document.getElementById('idvendedorgrafica').value;
+    ventasHash.ventasporVendedor(id);
+}
+

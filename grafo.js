@@ -1,6 +1,7 @@
 class nodo{
-    constructor(id){
+    constructor(id,nombre){
         this.id = id;
+        this.nombre=nombre;
         this.siguiente = null;
         this.anterior = null;
         this.ponderacion=0;
@@ -14,8 +15,8 @@ class lista_adyasentes{
         this.ultimo = null;
     }
 
-    insertar(id,p){
-        let nuevo = new nodo(id);
+    insertar(id,p,nombre){
+        let nuevo = new nodo(id,nombre);
         nuevo.ponderacion = p;
         if(this.primero == null){
             this.primero = nuevo;
@@ -40,8 +41,8 @@ class grafo{
         this.ultimo = null;
     }
 
-    insertar(id){
-        let nuevo = new nodo(id);
+    insertar(id,nombre){
+        let nuevo = new nodo(id,nombre);
 
         if(this.primero == null){
             this.primero = nuevo;
@@ -117,12 +118,12 @@ class grafo{
 }
 
 let grafo_prueba = new grafo();
-grafo_prueba.insertar(4);
-grafo_prueba.insertar(6);
-grafo_prueba.insertar(9);
-grafo_prueba.insertar(11);
-grafo_prueba.insertar(7);
-grafo_prueba.insertar(10);
+grafo_prueba.insertar(4,"bodega1");
+grafo_prueba.insertar(6,"bodega2");
+grafo_prueba.insertar(9,"bodega3");
+grafo_prueba.insertar(11,"bodega4");
+grafo_prueba.insertar(7,"bodega5");
+grafo_prueba.insertar(10,"bodega6");
 
 //***** agregar adyacentes */
 grafo_prueba.agregar_adyacente(4,6,5);
